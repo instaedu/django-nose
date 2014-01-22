@@ -141,8 +141,9 @@ class BasicNoseRunner(DiscoverRunner):
     options = _get_options()
 
     def run_suite(self, nose_argv):
+        set_up_plugin = DjangoSetUpPlugin(self)
         result_plugin = ResultPlugin()
-        plugins_to_add = [DjangoSetUpPlugin(self),
+        plugins_to_add = [set_up_plugin,
                           result_plugin,
                           TestReorderer()]
 
@@ -155,8 +156,13 @@ class BasicNoseRunner(DiscoverRunner):
             # Setup isn't necessary in Django < 1.7
             pass
 
-        nose.core.TestProgram(argv=nose_argv, exit=False,
-                              addplugins=plugins_to_add)
+        try:
+            nose.core.TestProgram(argv=nose_argv, exit=False,
+                                  addplugins=plugins_to_add)
+        except SystemExit as e:
+            set_up_plugin.finalize(None)
+            sys.exit(e.code)
+
         return result_plugin.result
 
     def run_tests(self, test_labels, extra_tests=None):
