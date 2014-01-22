@@ -6,14 +6,14 @@ ROOT = os.path.abspath(os.path.dirname(__file__))
 
 setup(
     name='django-nose',
-    version='1.2',
+    version='1.2.0.1',
     description='Makes your Django tests simple and snappy',
     long_description=open(os.path.join(ROOT, 'README.rst')).read(),
     author='Jeff Balogh',
     author_email='me@jeffbalogh.org',
     maintainer='Erik Rose',
     maintainer_email='erikrose@grinchcentral.com',
-    url='http://github.com/jbalogh/django-nose',
+    url='http://github.com/instaedu/django-nose',
     license='BSD',
     packages=find_packages(exclude=['testapp', 'testapp/*']),
     include_package_data=True,
